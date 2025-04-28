@@ -12,16 +12,15 @@ app = create_app()
 
 configure_swagger(app)
 
-
 @app.route("/")
 def home():
-    return {"status": "running"}, 200  # responde JSON
+    return {"status": "running"}, 200
 
-# Blueprint das rotas organizadas
+
 app.register_blueprint(professores_blueprint, url_prefix="/professores")
 app.register_blueprint(turmas_blueprint, url_prefix="/turmas")
 app.register_blueprint(alunos_blueprint, url_prefix="/alunos")
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))  # Usa a variável de ambiente PORT
+    port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port, debug=True)
