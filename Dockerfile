@@ -1,18 +1,24 @@
-# Usa uma imagem oficial do Python
-FROM python:3.11-slim
+FROM python:3.10-slim
 
-# Define diretório de trabalho
+# Criar e acessar o diretório da aplicação
 WORKDIR /app
 
-# Copia os arquivos do projeto para o contêiner
-COPY . .
+# Copiar os arquivos da aplicação para o contêiner
+COPY . /app
 
-# Instala as dependências
+# Instalar as dependências
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Expõe a porta que o Flask usa
+# Criar um usuário sem privilégios de root
+RUN useradd -m appuser
+
+# Definir o usuário não root para rodar a aplicação
+USER appuser
+
+# Definir a porta da aplicação
 EXPOSE 5000
 
-# Comando para iniciar o app
+# Comando para rodar a aplicação
 CMD ["python", "app.py"]
+
 
