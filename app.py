@@ -6,6 +6,8 @@ from routes.professor_routes import professores_blueprint
 from routes.turma_routes import turmas_blueprint
 from routes.aluno_routes import alunos_blueprint
 
+import os
+
 app = create_app()
 
 configure_swagger(app)
@@ -15,6 +17,5 @@ app.register_blueprint(turmas_blueprint, url_prefix="/turmas")
 app.register_blueprint(alunos_blueprint, url_prefix="/alunos")
 
 if __name__ == "__main__":
-    app.run(debug=True)
-
-
+    port = int(os.environ.get("PORT", 5000))  # pega a variável PORT do ambiente ou usa 5000
+    app.run(host="0.0.0.0", port=port, debug=True)

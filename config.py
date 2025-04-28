@@ -4,22 +4,31 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
+
+class Config:
+
+    DEBUG = False
+    TESTING = False
+    SECRET_KEY = os.environ.get('SECRET_KEY', 'sua-secret-key-padrao')
+
+class DevelopmentConfig(Config):
+
+    DEBUG = True
+
+class ProductionConfig(Config):
+    DEBUG = False
+
 def create_app():
+    from flask import Flask
+
     app = Flask(__name__)
 
-    app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'minha_chave_secreta')
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
-        'DATABASE_URL',
-        'sqlite:///banco.db'
-    )
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-    db.init_app(app)
+    # Escolhe qual configuração usar
+    env = os.environ.get('FLASK_ENV', 'development')
+    if env == 'production':
+        app.config.from_object('config.ProductionConfig')
+    else:
+        app.config.from_object('config.DevelopmentConfig')
 
     return app
 
-
-if __name__ == "__main__":
-    app = create_app()
-    port = int(os.environ.get("PORT", 5000)) 
-    app.run(host="0.0.0.0", port=port, debug=True)
