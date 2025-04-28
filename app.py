@@ -14,5 +14,3 @@ app.register_blueprint(professores_blueprint, url_prefix="/professores")
 app.register_blueprint(turmas_blueprint, url_prefix="/turmas")
 app.register_blueprint(alunos_blueprint, url_prefix="/alunos")
 
-if __name__ == "__main__":
-    app.run(debug=True)
