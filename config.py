@@ -4,23 +4,19 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
-
 class Config:
-
-    DEBUG = False
-    TESTING = False
     SECRET_KEY = os.environ.get('SECRET_KEY', 'sua-secret-key-padrao')
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 class DevelopmentConfig(Config):
-
     DEBUG = True
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///school_dev.db'
 
 class ProductionConfig(Config):
     DEBUG = False
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', 'sqlite:///school_prod.db')
 
 def create_app():
-    from flask import Flask
-
     app = Flask(__name__)
 
     # Escolhe qual configuração usar
@@ -31,4 +27,3 @@ def create_app():
         app.config.from_object('config.DevelopmentConfig')
 
     return app
-
