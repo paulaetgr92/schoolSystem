@@ -8,10 +8,15 @@ from routes.turma_routes import turmas_blueprint
 from routes.aluno_routes import alunos_blueprint
 from routes.api_rooutes import api_dp
 
+# Cria a aplicação Flask
 app = create_app()
 
 # Inicializa a extensão SQLAlchemy com o app
 db.init_app(app)
+
+# Cria todas as tabelas (somente durante o desenvolvimento)
+with app.app_context():
+    db.create_all()
 
 # Configura o Swagger
 configure_swagger(app)
